@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -20,7 +20,9 @@ class Recipe(Base):
     instructions: Mapped[str] = mapped_column(String, nullable=False)
     tags: Mapped[str] = mapped_column(String, default="")
 
-    ingredients: Mapped[list[RecipeIngredient]] = relationship(back_populates="recipe", cascade="all, delete-orphan")
+    ingredients: Mapped[list[RecipeIngredient]] = relationship(
+        back_populates="recipe", cascade="all, delete-orphan"
+    )
 
 
 class Ingredient(Base):
@@ -40,8 +42,12 @@ class RecipeIngredient(Base):
 
     __tablename__ = "recipe_ingredients"
 
-    recipe_id: Mapped[int] = mapped_column(ForeignKey("recipes.id"), primary_key=True)
-    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"), primary_key=True)
+    recipe_id: Mapped[int] = mapped_column(
+        ForeignKey("recipes.id"), primary_key=True
+    )
+    ingredient_id: Mapped[int] = mapped_column(
+        ForeignKey("ingredients.id"), primary_key=True
+    )
     quantity: Mapped[str] = mapped_column(String, nullable=False)
 
     recipe: Mapped[Recipe] = relationship(back_populates="ingredients")
@@ -53,7 +59,9 @@ class PantryItem(Base):
 
     __tablename__ = "pantry"
 
-    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"), primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(
+        ForeignKey("ingredients.id"), primary_key=True
+    )
     quantity: Mapped[str] = mapped_column(String, nullable=False)
 
     ingredient: Mapped[Ingredient] = relationship()

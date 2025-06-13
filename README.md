@@ -19,13 +19,13 @@ uvicorn chef_ai.app:app --reload
 ## Run CLI
 
 ```bash
-python chef_ai/main.py
+python -m chef_ai.main
 ```
 
 ## Lint
 
 ```bash
-ruff .
+ruff check .
 ```
 
 ## Test

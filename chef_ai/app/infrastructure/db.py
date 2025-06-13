@@ -11,7 +11,9 @@ class Database:
 
     def __init__(self, url: str) -> None:
         self.engine = create_engine(url, future=True)
-        self.SessionLocal = sessionmaker(self.engine, expire_on_commit=False, future=True)
+        self.SessionLocal = sessionmaker(
+            self.engine, expire_on_commit=False, future=True
+        )
 
     def create_tables(self) -> None:
         Base.metadata.create_all(self.engine)

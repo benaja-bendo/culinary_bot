@@ -7,7 +7,7 @@ from tabulate import tabulate
 
 from chef_ai.app.domain import models, services
 from chef_ai.app.infrastructure.db import Database
-from chef_ai.app.infrastructure.repositories import PantryRepository, RecipeRepository
+from chef_ai.app.infrastructure.repositories import RecipeRepository
 
 app = typer.Typer()
 
@@ -26,11 +26,17 @@ def add_recipe(name: str, instructions: str) -> None:
             if not ing:
                 break
             qty = typer.prompt("Quantity")
-            ingredient = session.query(models.Ingredient).filter_by(name=ing).first()
+            ingredient = (
+                session.query(models.Ingredient).filter_by(name=ing).first()
+            )
             if not ingredient:
                 ingredient = models.Ingredient(name=ing)
-            ingredients.append(models.RecipeIngredient(ingredient=ingredient, quantity=qty))
-        recipe = models.Recipe(name=name, instructions=instructions, ingredients=ingredients)
+            ingredients.append(
+                models.RecipeIngredient(ingredient=ingredient, quantity=qty)
+            )
+        recipe = models.Recipe(
+            name=name, instructions=instructions, ingredients=ingredients
+        )
         repo.add(recipe)
         typer.echo(f"Added recipe {recipe.id}")
 

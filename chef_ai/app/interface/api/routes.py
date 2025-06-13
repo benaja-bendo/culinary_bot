@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -46,7 +46,10 @@ def create_recipe(data: RecipeIn, session: Session = Depends(get_session)) -> di
             models.RecipeIngredient(ingredient=ingredient, quantity=item.quantity)
         )
     recipe = models.Recipe(
-        name=data.name, instructions=data.instructions, tags=data.tags or "", ingredients=ingredients
+        name=data.name,
+        instructions=data.instructions,
+        tags=data.tags or "",
+        ingredients=ingredients,
     )
     repo.add(recipe)
     return {"id": recipe.id}
@@ -73,5 +76,7 @@ def plan_week(session: Session = Depends(get_session)) -> list[dict]:
 def suggest(session: Session = Depends(get_session)) -> list[dict]:
     recipe_repo = RecipeRepository(session)
     pantry_repo = PantryRepository(session)
-    suggestions = services.suggest_recipes_from_pantry(recipe_repo.list(), pantry_repo.list())
+    suggestions = services.suggest_recipes_from_pantry(
+        recipe_repo.list(), pantry_repo.list()
+    )
     return [{"id": r.id, "name": r.name} for r in suggestions]

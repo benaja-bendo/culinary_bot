@@ -21,7 +21,9 @@ def suggest_recipes_from_pantry(
     return result
 
 
-def build_weekly_plan(recipes: list[models.Recipe], days: int = 7) -> list[models.Recipe]:
+def build_weekly_plan(
+    recipes: list[models.Recipe], days: int = 7
+) -> list[models.Recipe]:
     """Return a weekly plan of recipes."""
     if not recipes:
         return []

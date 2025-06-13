@@ -1,4 +1,4 @@
-from chef_ai.app.domain import models, services
+from chef_ai.app.domain import models
 from chef_ai.app.infrastructure.db import Database
 from chef_ai.app.infrastructure.repositories import RecipeRepository
 
